@@ -14,7 +14,10 @@
     google.charts.setOnLoadCallback(drawChart1);
   
     function showTimelineChart(){
-      drawChart2();
+      //get color from input, pass to draw chart function
+      //TODO: validate that it's a legit color string
+      let color = document.getElementById("color").value
+      drawChart2(color);
     }
     
     google.charts.setOnLoadCallback(drawChart3);
@@ -43,7 +46,7 @@
         chart.draw(data, options);
       }
     
-    function drawChart2() {
+    function drawChart2(color) {
       var container = document.getElementById('timeline');
       var chart = new google.visualization.Timeline(container);
       var dataTable = new google.visualization.DataTable();
@@ -60,7 +63,8 @@
         [ '4', 'Task 4', 'Task: Complete twelve courses in preferred major', new Date(2020, 8), new Date(2022, 4)]]);
         
       var options = {
-        colors: ['#002699', '#0039e6', '#668cff', '#b3c6ff'],
+        timeline: {singleColor: color},
+        //colors: ['#002699', '#0039e6', '#668cff', '#b3c6ff'],
         tooltip: {isHtml: true}
       };
 
@@ -106,6 +110,12 @@
   <button onclick="showTimelineChart()">
     Show Phases of Study
   </button>
+  
+  <form>
+    <label>What is your favorite color?
+      <input type="text" name="color" id="color">
+    </label>
+  </form>
   
   <!--Div that will hold the donut chart-->
   <div id="donutchart"></div>
