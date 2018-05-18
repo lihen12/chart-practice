@@ -12,7 +12,11 @@
 
     // Set a callback to run when the Google Visualization API is loaded.
     google.charts.setOnLoadCallback(drawChart1);
-    google.charts.setOnLoadCallback(drawChart2);
+  
+    function showTimelineChart(){
+      drawChart2();
+    }
+    
     google.charts.setOnLoadCallback(drawChart3);
 
     // Callback that creates and populates a data table,
@@ -98,6 +102,10 @@
 </head>
 <body>
   <h1>Using a charting library</h1>
+  
+  <button onclick="showTimelineChart()">
+    Show Phases of Study
+  </button>
   
   <!--Div that will hold the donut chart-->
   <div id="donutchart"></div>
