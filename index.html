@@ -8,40 +8,103 @@
   <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
   <script type="text/javascript">
     // Load the Visualization API and the corechart package.
-      google.charts.load('current', {'packages':['corechart']});
+    google.charts.load('current', {'packages':['corechart', 'timeline', 'bar']});
 
-      // Set a callback to run when the Google Visualization API is loaded.
-      google.charts.setOnLoadCallback(drawChart);
+    // Set a callback to run when the Google Visualization API is loaded.
+    google.charts.setOnLoadCallback(drawChart1);
+    google.charts.setOnLoadCallback(drawChart2);
+    google.charts.setOnLoadCallback(drawChart3);
 
-      // Callback that creates and populates a data table,
-      // instantiates the pie chart, passes in the data and
-      // draws it.
-      function drawChart() {
+    // Callback that creates and populates a data table,
+    // instantiates the pie chart, passes in the data and
+    // draws it.
+    function drawChart1() {
        var data = google.visualization.arrayToDataTable([
-          ['Task', 'Hours per Day'],
-          ['Work',     11],
-          ['Eat',      2],
-          ['Commute',  2],
-          ['Watch TV', 2],
-          ['Sleep',    7]
+          ['Allocation ID', 'Dollars'],
+          ['Administrative Costs',     0.04],
+          ['Fundraising',      0.16],
+          ['Youth Programs',  0.36],
+          ['Adult Programs', 0.44]
         ]);
 
         var options = {
           title: 'Dollar Allocation of Organization',
           pieHole: 0.4,
+          slices: [{color: '#8AD1C2'}, {color: '#9F8AD1'}, {color: '#D18A99'}, {color: '#BCD18A'}],
+          width: 750,
+          height: 500
         };
 
         var chart = new google.visualization.PieChart(document.getElementById('donutchart'));
         chart.draw(data, options);
       }
-  </script>
+    
+    function drawChart2() {
+      var container = document.getElementById('timeline');
+      var chart = new google.visualization.Timeline(container);
+      var dataTable = new google.visualization.DataTable();
+
+      dataTable.addColumn({ type: 'string', id: 'Block' });
+      dataTable.addColumn({ type: 'string', id: 'dummy bar label' });
+      dataTable.addColumn({ type: 'string', role: 'tooltip' });
+      dataTable.addColumn({ type: 'date', id: 'Start' });
+      dataTable.addColumn({ type: 'date', id: 'End' });
+      dataTable.addRows([
+        [ '1', 'Task 1', 'Task: Complete general education requirements', new Date(2018, 8), new Date(2019, 4) ],
+        [ '2', 'Task 2', 'Task: Choose major', new Date(2019, 5), new Date(2019, 7) ],
+        [ '3', 'Task 3', 'Task: Complete two courses in preferred major', new Date(2019, 8), new Date(2020, 4) ],
+        [ '4', 'Task 4', 'Task: Complete twelve courses in preferred major', new Date(2020, 8), new Date(2022, 4)]]);
+        
+      var options = {
+        colors: ['#002699', '#0039e6', '#668cff', '#b3c6ff'],
+        tooltip: {isHtml: true}
+      };
+
+        chart.draw(dataTable, options);
+      }
+    
+      function drawChart3() {
+        var data = google.visualization.arrayToDataTable([
+          ['Year', 'Fall', 'Spring', { role: 'annotation' } ],
+          ['2019', 3, 3, ''],
+          ['2020', 1, 1, ''],
+          ['2021', 3, 3, ''],
+          ['2022', 3, 3, '']
+        ]);
+        
+        var view = new google.visualization.DataView(data);
+        view.setColumns([0, 1,
+                       { calc: "stringify",
+                         sourceColumn: 1,
+                         type: "string",
+                         role: "annotation" },
+                       2]);
+
+        var options = {
+          chart: {
+            title: 'Number of Classes per Semester',
+            subtitle: 'Fall, Spring Classes: 2019-2022',
+          },
+          bars: 'horizontal', // Required for Material Bar Charts.
+          colors: ['#0039e6', '#b3c6ff']
+        };
+
+        var chart = new google.charts.Bar(document.getElementById('barchart_material'));
+
+        chart.draw(view, google.charts.Bar.convertOptions(options));
+      }
+    </script>
   <script src="script.js"></script>
 </head>
 <body>
   <h1>Using a charting library</h1>
   
   <!--Div that will hold the donut chart-->
-  <div id="donutchart" style="width: 900px; height: 500px;"></div>
+  <div id="donutchart"></div>
+  
+  <div id="timeline" style="height: 300px;"></div>
+  
+  <div id="barchart_material" style="width: 900px; height: 500px;"></div>
 
 </body>
 </html>
